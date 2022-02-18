@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -19,6 +20,12 @@ public class BookManagerController {
     @Autowired
     BookManagerService bookManagerService;
 
+    @GetMapping
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> books = bookManagerService.getAllBooks();
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
     @GetMapping({ "/{bookId}" })
     public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
         try {
@@ -27,6 +34,7 @@ public class BookManagerController {
             throw new ApiRequestException("Oops Request book is not available");
         }
     }
+
 
     @PostMapping
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
